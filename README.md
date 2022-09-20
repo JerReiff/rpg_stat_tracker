@@ -21,5 +21,6 @@ or<br>
 7. Create an "app" on your discord account and add a bot to it on the developer portal. Guides may frequently change, so you'll have to google this one. The process is relatively straightforward. As of September 19, 2022, these are the permissions the bot will need:
 ![Screenshot_20220919_213039](https://user-images.githubusercontent.com/54644679/191147597-f72adcf6-bf3b-4acb-8d5e-969b0d0e833f.png)
 8. Copy your bot access token to the ```discord_token``` field of ```.env```
-9. Run the app!<br>
+9. Configure your logging directory by entering an absolute folder path as the ```log_location``` in ```.env```
+10. Run the app!<br>
 ```python3 src/stat_tracker.py```
