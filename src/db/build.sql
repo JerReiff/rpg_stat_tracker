@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS discord_server(
-    id INT UNSIGNED NOT NULL PRIMARY KEY,
+    id BIGINT UNSIGNED NOT NULL PRIMARY KEY,
     fk_campaign_id INT UNSIGNED
 
 -- defined below after table creation
@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS discord_server(
 
 CREATE TABLE IF NOT EXISTS campaign(
     id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    fk_discord_server_id INT UNSIGNED NOT NULL,
+    fk_discord_server_id BIGINT UNSIGNED NOT NULL,
     campaign_name VARCHAR(35) NOT NULL,
 
     INDEX disc_srv_id (fk_discord_server_id),
@@ -28,13 +28,13 @@ ALTER TABLE discord_server
 
 CREATE TABLE IF NOT EXISTS discord_server_user(
     id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    discord_name VARCHAR(40) NOT NULL,
-    fk_discord_server_id INT UNSIGNED NOT NULL,
+    discord_id BIGINT NOT NULL,
+    fk_discord_server_id BIGINT UNSIGNED NOT NULL,
     fk_rpg_character_id INT UNSIGNED,
 
     INDEX disc_srv_id (fk_discord_server_id),
     INDEX char_id (fk_rpg_character_id),
-    UNIQUE INDEX (fk_discord_server_id, discord_name),
+    UNIQUE INDEX (fk_discord_server_id, discord_id),
 
     FOREIGN KEY (fk_discord_server_id)
         REFERENCES discord_server(id)
@@ -49,24 +49,21 @@ CREATE TABLE IF NOT EXISTS discord_server_user(
 CREATE TABLE IF NOT EXISTS rpg_character(
     id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
     character_name VARCHAR (40) NOT NULL, 
-    fk_discord_server_user_id INT UNSIGNED NOT NULL,
     fk_campaign_id INT UNSIGNED NOT NULL,
     kills INT UNSIGNED NOT NULL DEFAULT 0,
     downs INT UNSIGNED NOT NULL DEFAULT 0,
     deaths INT UNSIGNED NOT NULL DEFAULT 0,
     damage_dealt INT UNSIGNED NOT NULL DEFAULT 0,
     damage_received INT UNSIGNED NOT NULL DEFAULT 0,
-    healing_provided INT UNSIGNED NOT NULL DEFAULT 0,
+    healing_performed INT UNSIGNED NOT NULL DEFAULT 0,
     healing_received INT UNSIGNED NOT NULL DEFAULT 0,
     
-    INDEX usr_id (fk_discord_server_user_id),
     INDEX campaign_id (fk_campaign_id),
     UNIQUE INDEX campaign_char (fk_campaign_id, character_name),
 
-    FOREIGN KEY (fk_discord_server_user_id)
-        REFERENCES discord_server_user(id),
     FOREIGN KEY (fk_campaign_id)
         REFERENCES campaign(id)
+        ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 ALTER TABLE discord_server_user 

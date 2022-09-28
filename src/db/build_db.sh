@@ -13,9 +13,11 @@ EOF
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
 WIPE="false"
-while getopts r o; do
+PROD="false"
+while getopts ":rp" o; do
   case $o in
     (r) WIPE="true";;
+    (p) PROD="true";;
     (*) usage
   esac
 done
@@ -31,13 +33,21 @@ read PASSWORD
 stty echo
 printf "\n"
 
+if "$PROD"
+then
+    DB_NAME="rpg_stat_tracker"
+else 
+    DB_NAME="rpg_stat_tracker_test"
+fi
+
 if "$WIPE"
 then
-    echo "Creating a database with the name 'rpg_stat_tracker'..."
+    echo "Creating a database with the name '$DB_NAME'..."
     echo "This will destroy any existing databases of this name"
-    mysql --user=$USERNAME --password=$PASSWORD < "$SCRIPT_DIR/rebuild.sql" &&
+    SQL_Q="DROP DATABASE IF EXISTS $DB_NAME; CREATE DATABASE $DB_NAME;"
+    mysql --user=$USERNAME --password=$PASSWORD -e "$SQL_Q" &&
     echo "Database created!"
 fi
 echo "Building database."
-mysql --user=$USERNAME --password=$PASSWORD rpg_stat_tracker < "$SCRIPT_DIR/build.sql" &&
+mysql --user=$USERNAME --password=$PASSWORD $DB_NAME < "$SCRIPT_DIR/build.sql" &&
 echo "Database built!"

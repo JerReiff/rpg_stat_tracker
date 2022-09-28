@@ -8,6 +8,8 @@ import sys
 from dotenv import load_dotenv
 import os
 from pathlib import Path
+import typing
+import controller
 
 load_dotenv()
 
@@ -37,161 +39,129 @@ intents.message_content = True
 bot = commands.Bot(command_prefix='/', intents=intents)
 
 @bot.command()
-async def createCampaign(ctx, *args):
-    arguments = ', '.join(args)
-    await ctx.send(f'You passed: "{arguments}" but "{sys._getframe(  ).f_code.co_name}" hasn\'t been implemented yet!')    
+async def createCampaign(ctx, name):
+    await ctx.send(controller.createCampaign(ctx.guild.id, name))
 
 @bot.command()
-async def selectCampaign(ctx, *args):
-    arguments = ', '.join(args)
-    await ctx.send(f'You passed: "{arguments}" but "{sys._getframe(  ).f_code.co_name}" hasn\'t been implemented yet!')  
+async def selectCampaign(ctx, name):
+    await ctx.send(controller.selectCampaign(ctx.guild.id, name))  
 
 @bot.command()
-async def getCampaign(ctx, *args):
-    arguments = ', '.join(args)
-    await ctx.send(f'You passed: "{arguments}" but "{sys._getframe(  ).f_code.co_name}" hasn\'t been implemented yet!')  
+async def getCampaign(ctx):
+    await ctx.send(controller.getCampaign(ctx.guild.id))
 
 @bot.command()
-async def listCampaigns(ctx, *args):
-    arguments = ', '.join(args)
-    await ctx.send(f'You passed: "{arguments}" but "{sys._getframe(  ).f_code.co_name}" hasn\'t been implemented yet!')  
-
+async def listCampaigns(ctx):
+    await ctx.send(controller.listCampaigns(ctx.guild.id))  
 
 @bot.command()
-async def deleteCampaign(ctx, *args):
-    arguments = ', '.join(args)
-    await ctx.send(f'You passed: "{arguments}" but "{sys._getframe(  ).f_code.co_name}" hasn\'t been implemented yet!')      
+async def deleteCampaign(ctx, name):
+    await ctx.send(controller.deleteCampaign(ctx.guild.id, name))      
 
 @bot.command()
-async def createCharacter(ctx, *args):
-    arguments = ', '.join(args)
-    await ctx.send(f'You passed: "{arguments}" but "{sys._getframe(  ).f_code.co_name}" hasn\'t been implemented yet!')  
+async def createCharacter(ctx, name):
+    await ctx.send(controller.createCharacter(ctx.guild.id, name))  
 
 @bot.command()
-async def selectCharacter(ctx, *args):
-    arguments = ', '.join(args)
-    await ctx.send(f'You passed: "{arguments}" but "{sys._getframe(  ).f_code.co_name}" hasn\'t been implemented yet!')
-
+async def selectCharacter(ctx, name):
+    await ctx.send(controller.selectCharacter(ctx.guild.id, ctx.author.id, name))
 
 @bot.command()
-async def getCharacter(ctx, *args):
-    arguments = ', '.join(args)
-    await ctx.send(f'You passed: "{arguments}" but "{sys._getframe(  ).f_code.co_name}" hasn\'t been implemented yet!')  
+async def getCharacter(ctx):
+    await ctx.send(controller.getCharacter(ctx.guild.id, ctx.author.id))
 
 @bot.command()
-async def listCharacters(ctx, *args):
-    arguments = ', '.join(args)
-    await ctx.send(f'You passed: "{arguments}" but "{sys._getframe(  ).f_code.co_name}" hasn\'t been implemented yet!')  
+async def listCharacters(ctx):
+    await ctx.send(controller.listCharacters(ctx.guild.id))  
 
 @bot.command()
-async def deleteCharacter(ctx, *args):
-    arguments = ', '.join(args)
-    await ctx.send(f'You passed: "{arguments}" but "{sys._getframe(  ).f_code.co_name}" hasn\'t been implemented yet!')
+async def deleteCharacter(ctx, name):
+    await ctx.send(controller.deleteCharacter(ctx.guild.id, name))
 
 @bot.command()
-async def getKills(ctx, *args):
-    arguments = ', '.join(args)
-    await ctx.send(f'You passed: "{arguments}" but "{sys._getframe(  ).f_code.co_name}" hasn\'t been implemented yet!')    
+async def getKills(ctx, name: typing.Optional[str] = None):
+    await ctx.send(controller.getKills(ctx.guild.id, ctx.author.id, name))    
 
 @bot.command()
-async def addKill(ctx, *args):
-    arguments = ', '.join(args)
-    await ctx.send(f'You passed: "{arguments}" but "{sys._getframe(  ).f_code.co_name}" hasn\'t been implemented yet!')
+async def addKill(ctx, name: typing.Optional[str] = None):
+    await ctx.send(controller.addKills(ctx.guild.id, ctx.author.id, 1, name))
 
 @bot.command()
-async def setKills(ctx, *args):
-    arguments = ', '.join(args)
-    await ctx.send(f'You passed: "{arguments}" but "{sys._getframe(  ).f_code.co_name}" hasn\'t been implemented yet!')    
+async def setKills(ctx, kills: int, name: typing.Optional[str] = None):
+    await ctx.send(controller.setKills(ctx.guild.id, ctx.author.id, kills, name))    
 
 @bot.command()
-async def getDowns(ctx, *args):
-    arguments = ', '.join(args)
-    await ctx.send(f'You passed: "{arguments}" but "{sys._getframe(  ).f_code.co_name}" hasn\'t been implemented yet!')
+async def getDowns(ctx, name: typing.Optional[str] = None):
+    await ctx.send(controller.getDowns(ctx.guild.id, ctx.author.id, name)) 
 
 @bot.command()
-async def addDown(ctx, *args):
-    arguments = ', '.join(args)
-    await ctx.send(f'You passed: "{arguments}" but "{sys._getframe(  ).f_code.co_name}" hasn\'t been implemented yet!')
+async def addDown(ctx, name: typing.Optional[str] = None):
+    await ctx.send(controller.addDown(ctx.guild.id, ctx.author.id, 1, name))
 
 @bot.command()
-async def setDowns(ctx, *args):
-    arguments = ', '.join(args)
-    await ctx.send(f'You passed: "{arguments}" but "{sys._getframe(  ).f_code.co_name}" hasn\'t been implemented yet!')    
+async def setDowns(ctx, downs: int, name: typing.Optional[str] = None):
+    await ctx.send(controller.setDowns(ctx.guild.id, ctx.author.id, downs, name))    
 
 @bot.command()
-async def getDeaths(ctx, *args):
-    arguments = ', '.join(args)
-    await ctx.send(f'You passed: "{arguments}" but "{sys._getframe(  ).f_code.co_name}" hasn\'t been implemented yet!')
+async def getDeaths(ctx, name: typing.Optional[str] = None):
+    await ctx.send(controller.getDeaths(ctx.guild.id, ctx.author.id, name)) 
 
 @bot.command()
-async def addDeath(ctx, *args):
-    arguments = ', '.join(args)
-    await ctx.send(f'You passed: "{arguments}" but "{sys._getframe(  ).f_code.co_name}" hasn\'t been implemented yet!')
+async def addDeath(ctx, name: typing.Optional[str] = None):
+    await ctx.send(controller.addDeath(ctx.guild.id, ctx.author.id, 1, name))
 
 @bot.command()
-async def setDeaths(ctx, *args):
-    arguments = ', '.join(args)
-    await ctx.send(f'You passed: "{arguments}" but "{sys._getframe(  ).f_code.co_name}" hasn\'t been implemented yet!')    
+async def setDeaths(ctx, deaths: int, name: typing.Optional[str] = None):
+    await ctx.send(controller.setDeaths(ctx.guild.id, ctx.author.id, deaths, name))    
+
+async def getDamageDealt(ctx, name: typing.Optional[str] = None):
+    await ctx.send(controller.getDamageDealt(ctx.guild.id, name, ctx.author.id)) 
 
 @bot.command()
-async def getDamageDealt(ctx, *args):
-    arguments = ', '.join(args)
-    await ctx.send(f'You passed: "{arguments}" but "{sys._getframe(  ).f_code.co_name}" hasn\'t been implemented yet!')
+async def addDamageDealt(ctx, dmg: int, name: typing.Optional[str] = None):
+    await ctx.send(controller.addDamageDealt(ctx.guild.id, ctx.author.id, dmg, name))
 
 @bot.command()
-async def addDamageDealt(ctx, *args):
-    arguments = ', '.join(args)
-    await ctx.send(f'You passed: "{arguments}" but "{sys._getframe(  ).f_code.co_name}" hasn\'t been implemented yet!')
+async def setDamageDealt(ctx, dmg: int, name: typing.Optional[str] = None):
+    await ctx.send(controller.setDamageDealt(ctx.guild.id, ctx.author.id, dmg, name))    
 
 @bot.command()
-async def setDamageDealt(ctx, *args):
-    arguments = ', '.join(args)
-    await ctx.send(f'You passed: "{arguments}" but "{sys._getframe(  ).f_code.co_name}" hasn\'t been implemented yet!')    
+async def getDamageReceived(ctx, name: typing.Optional[str] = None):
+    await ctx.send(controller.getDamageReceived(ctx.guild.id, ctx.author.id, name)) 
 
 @bot.command()
-async def getDamageReceived(ctx, *args):
-    arguments = ', '.join(args)
-    await ctx.send(f'You passed: "{arguments}" but "{sys._getframe(  ).f_code.co_name}" hasn\'t been implemented yet!')
+async def addDamageReceived(ctx, dmg: int, name: typing.Optional[str] = None):
+    await ctx.send(controller.addDamageReceived(ctx.guild.id, ctx.author.id, dmg, name))
 
 @bot.command()
-async def addDamageReceived(ctx, *args):
-    arguments = ', '.join(args)
-    await ctx.send(f'You passed: "{arguments}" but "{sys._getframe(  ).f_code.co_name}" hasn\'t been implemented yet!')
+async def setDamageReceived(ctx, dmg: int, name: typing.Optional[str] = None):
+    await ctx.send(controller.setDamageReceived(ctx.guild.id, ctx.author.id, dmg, name))    
 
 @bot.command()
-async def setDamageReceived(ctx, *args):
-    arguments = ', '.join(args)
-    await ctx.send(f'You passed: "{arguments}" but "{sys._getframe(  ).f_code.co_name}" hasn\'t been implemented yet!')    
+async def getHealingPerformed(ctx, name: typing.Optional[str] = None):
+    await ctx.send(controller.getHealingPerformed(ctx.guild.id, ctx.author.id, name)) 
 
 @bot.command()
-async def getHealingPerformed(ctx, *args):
-    arguments = ', '.join(args)
-    await ctx.send(f'You passed: "{arguments}" but "{sys._getframe(  ).f_code.co_name}" hasn\'t been implemented yet!')
+async def addHealingPerformed(ctx, hp: int, name: typing.Optional[str] = None):
+    await ctx.send(controller.addHealingPerformed(ctx.guild.id, ctx.author.id, hp, name))
 
 @bot.command()
-async def addHealingPerformed(ctx, *args):
-    arguments = ', '.join(args)
-    await ctx.send(f'You passed: "{arguments}" but "{sys._getframe(  ).f_code.co_name}" hasn\'t been implemented yet!')
+async def setHealingPerformed(ctx, hp: int, name: typing.Optional[str] = None):
+    await ctx.send(controller.setHealingPerformed(ctx.guild.id, ctx.author.id, hp, name))    
 
 @bot.command()
-async def setHealingPerformed(ctx, *args):
-    arguments = ', '.join(args)
-    await ctx.send(f'You passed: "{arguments}" but "{sys._getframe(  ).f_code.co_name}" hasn\'t been implemented yet!')    
+async def getHealingReceived(ctx, name: typing.Optional[str] = None):
+    await ctx.send(controller.getHealingReceived(ctx.guild.id, ctx.author.id, name)) 
 
 @bot.command()
-async def getHealingReceived(ctx, *args):
-    arguments = ', '.join(args)
-    await ctx.send(f'You passed: "{arguments}" but "{sys._getframe(  ).f_code.co_name}" hasn\'t been implemented yet!')
+async def addHealingReceived(ctx, hp: int, name: typing.Optional[str] = None):
+    await ctx.send(controller.addHealingReceived(ctx.guild.id, ctx.author.id, hp, name))
 
 @bot.command()
-async def addHealingReceived(ctx, *args):
-    arguments = ', '.join(args)
-    await ctx.send(f'You passed: "{arguments}" but "{sys._getframe(  ).f_code.co_name}" hasn\'t been implemented yet!')
+async def setHealingReceived(ctx, hp: int, name: typing.Optional[str] = None):
+    await ctx.send(controller.setHealingReceived(ctx.guild.id, ctx.author.id, hp, name))    
 
-@bot.command()
-async def setHealingReceived(ctx, *args):
-    arguments = ', '.join(args)
-    await ctx.send(f'You passed: "{arguments}" but "{sys._getframe(  ).f_code.co_name}" hasn\'t been implemented yet!')    
+controller.connect()
 
 # Assume bot refers to a discord.ext.command.Bot subclass...
 # Suppress the default configuration since we have our own
