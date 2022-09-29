@@ -60,13 +60,7 @@ async def deleteCampaign(ctx, name):
 
 @bot.command()
 async def createCharacter(ctx, name):
-    await ctx.send(controller.createCharacter(ctx.guild.id, name))  
-
-@bot.command()
-async def selectCharacter(ctx, name):
-    await ctx.send(controller.selectCharacter(ctx.guild.id, ctx.author.id, name))
-
-@bot.command()
+    await ctx.send(controller.createCharacter(ctx.guild.id, name))
 async def getCharacter(ctx):
     await ctx.send(controller.getCharacter(ctx.guild.id, ctx.author.id))
 
@@ -77,6 +71,14 @@ async def listCharacters(ctx):
 @bot.command()
 async def deleteCharacter(ctx, name):
     await ctx.send(controller.deleteCharacter(ctx.guild.id, name))
+
+@bot.command()
+async def campaignOverview(ctx):
+    await ctx.send(controller.campaignOverview(ctx.guild.id))
+
+@bot.command()
+async def campaignKills(ctx):
+    await ctx.send(controller.campaignKills(ctx.guild.id))
 
 @bot.command()
 async def getKills(ctx, name: typing.Optional[str] = None):
@@ -91,6 +93,10 @@ async def setKills(ctx, kills: int, name: typing.Optional[str] = None):
     await ctx.send(controller.setKills(ctx.guild.id, ctx.author.id, kills, name))    
 
 @bot.command()
+async def campaignDowns(ctx):
+    await ctx.send(controller.campaignDowns(ctx.guild.id))
+
+@bot.command()
 async def getDowns(ctx, name: typing.Optional[str] = None):
     await ctx.send(controller.getDowns(ctx.guild.id, ctx.author.id, name)) 
 
@@ -101,6 +107,10 @@ async def addDown(ctx, name: typing.Optional[str] = None):
 @bot.command()
 async def setDowns(ctx, downs: int, name: typing.Optional[str] = None):
     await ctx.send(controller.setDowns(ctx.guild.id, ctx.author.id, downs, name))    
+
+@bot.command()
+async def campaignDeaths(ctx):
+    await ctx.send(controller.campaignDeaths(ctx.guild.id))
 
 @bot.command()
 async def getDeaths(ctx, name: typing.Optional[str] = None):
@@ -114,8 +124,12 @@ async def addDeath(ctx, name: typing.Optional[str] = None):
 async def setDeaths(ctx, deaths: int, name: typing.Optional[str] = None):
     await ctx.send(controller.setDeaths(ctx.guild.id, ctx.author.id, deaths, name))    
 
+@bot.command()
+async def campaignDamageDealt(ctx):
+    await ctx.send(controller.campaignDamageDealt(ctx.guild.id))
+
 async def getDamageDealt(ctx, name: typing.Optional[str] = None):
-    await ctx.send(controller.getDamageDealt(ctx.guild.id, name, ctx.author.id)) 
+    await ctx.send(controller.getDamageDealt(ctx.guild.id, ctx.author.id, name)) 
 
 @bot.command()
 async def addDamageDealt(ctx, dmg: int, name: typing.Optional[str] = None):
@@ -124,6 +138,10 @@ async def addDamageDealt(ctx, dmg: int, name: typing.Optional[str] = None):
 @bot.command()
 async def setDamageDealt(ctx, dmg: int, name: typing.Optional[str] = None):
     await ctx.send(controller.setDamageDealt(ctx.guild.id, ctx.author.id, dmg, name))    
+
+@bot.command()
+async def campaignDamageReceived(ctx):
+    await ctx.send(controller.campaignDamageReceived(ctx.guild.id))
 
 @bot.command()
 async def getDamageReceived(ctx, name: typing.Optional[str] = None):
@@ -138,6 +156,10 @@ async def setDamageReceived(ctx, dmg: int, name: typing.Optional[str] = None):
     await ctx.send(controller.setDamageReceived(ctx.guild.id, ctx.author.id, dmg, name))    
 
 @bot.command()
+async def campaignHealingPerformed(ctx):
+    await ctx.send(controller.campaignHealingPerformed(ctx.guild.id))
+
+@bot.command()
 async def getHealingPerformed(ctx, name: typing.Optional[str] = None):
     await ctx.send(controller.getHealingPerformed(ctx.guild.id, ctx.author.id, name)) 
 
@@ -148,6 +170,10 @@ async def addHealingPerformed(ctx, hp: int, name: typing.Optional[str] = None):
 @bot.command()
 async def setHealingPerformed(ctx, hp: int, name: typing.Optional[str] = None):
     await ctx.send(controller.setHealingPerformed(ctx.guild.id, ctx.author.id, hp, name))    
+
+@bot.command()
+async def campaignHealingReceived(ctx):
+    await ctx.send(controller.campaignHealingReceived(ctx.guild.id))
 
 @bot.command()
 async def getHealingReceived(ctx, name: typing.Optional[str] = None):

@@ -175,6 +175,13 @@ def deleteCharacter(campaign, name):
     cursor.execute(query, (campaign, name))
     mydb.commit()
 
+def getCampaignRPGStatGetter(column_name):
+    return f"""
+            SELECT character_name, {column_name}
+            FROM rpg_character
+            WHERE fk_campaign_id=%s
+            """
+
 def getRPGStatGetter(column_name):
     return f"""
             SELECT {column_name}
@@ -188,6 +195,12 @@ def getRPGStatSetter(column_name):
             SET {column_name}=%s
             WHERE id=%s
             """
+
+def getCampaignRPGStat(column_name, campaign_id):
+    query = getCampaignRPGStatGetter(column_name)
+    cursor.execute(query, (campaign_id,))
+    return cursor.fetchall()    
+
 def getRPGStat(column_name, id) -> int:
     query = getRPGStatGetter(column_name)
     cursor.execute(query, (id,))
@@ -198,11 +211,34 @@ def setRPGStat(column_name, id, value):
     cursor.execute(query, (value, id))
     mydb.commit()
 
+def getCampaignOverview(id):
+    query = f"""
+            SELECT
+                character_name, 
+                kills,
+                downs,
+                deaths,
+                damage_dealt,
+                damage_received,
+                healing_performed,
+                healing_received
+            FROM rpg_character
+            WHERE fk_campaign_id=%s
+            """
+    cursor.execute(query, (id,))
+    return cursor.fetchall()
+
+def getCampaignKills(campaign_id):
+    return getCampaignRPGStat("kills", campaign_id)
+
 def getKills(id):
     return getRPGStat("kills", id)
 
 def setKills(id, value):
     setRPGStat("kills", id, value)
+
+def getCampaignKills(campaign_id):
+    return getCampaignRPGStat("downs", campaign_id)
 
 def getDowns(id):
     return getRPGStat("downs", id)
@@ -210,11 +246,17 @@ def getDowns(id):
 def setDowns(id, value):
     setRPGStat("downs", id, value)
 
+def getCampaignDeaths(campaign_id):
+    return getCampaignRPGStat("deaths", campaign_id)
+
 def getDeaths(id):
     return getRPGStat("deaths", id)
 
 def setDeaths(id, value):
     setRPGStat("deaths", id, value)
+
+def getCampaignDamageDealt(campaign_id):
+    return getCampaignRPGStat("damage_dealt", campaign_id)
 
 def getDamageDealt(id):
     return getRPGStat("damage_dealt", id)
@@ -222,17 +264,26 @@ def getDamageDealt(id):
 def setDamageDealt(id, value):
     setRPGStat("damage_dealt", id, value)
 
+def getCampaignDamageReceived(campaign_id):
+    return getCampaignRPGStat("damage_received", campaign_id)
+
 def getDamageReceived(id):
     return getRPGStat("damage_received", id)
 
 def setDamageReceived(id, value):
     setRPGStat("damage_received", id, value)
 
+def getCampaignHealingPerformed(campaign_id):
+    return getCampaignRPGStat("healing_performed", campaign_id)
+
 def getHealingPerformed(id):
     return getRPGStat("healing_performed", id)
 
 def setHealingPerformed(id, value):
     setRPGStat("healing_performed", id, value)
+
+def getCampaignHealingReceived(campaign_id):
+    return getCampaignRPGStat("healing_received", campaign_id)
 
 def getHealingReceived(id):
     return getRPGStat("healing_received", id)

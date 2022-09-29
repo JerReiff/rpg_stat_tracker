@@ -134,15 +134,25 @@ def getRPGStat(guild, user, name: str, stat: str, func: Callable) -> str:
         return f"{character[1]} has {value} {stat}."
     else: return no_active_campaign_text
 
+def getCampaignRPGStat(guild, stat: str, func: Callable) -> str:
+    tryRegisterServer(guild)
+    campaign = m.getCampaign(guild)
+    if campaign is not None:
+        values = func(campaign[0])
+        ret =stat + "\n"
+        ret+="- - - - - - - - - -\n"
+        for value in values:
+            ret+= ":       ".join(map(str, value)) + "\n"
+        return ret
+    else: return no_active_campaign_text
+
 def setRPGStat(guild, user, value: int, name: str,  stat: str, setter: Callable, getter: Callable) -> str:
     tryRegisterServer(guild)
     campaign = m.getCampaign(guild)
     if campaign is not None:
         character = None
         if name is None:
-            print("before getCharacter")
             character = m.getCharacter(user, campaign[0])
-            print("Here")
             if character is None:
                 return no_active_character_text
         else:
@@ -150,12 +160,11 @@ def setRPGStat(guild, user, value: int, name: str,  stat: str, setter: Callable,
             if character is None:
                 return character_not_exist(name)
         setter(character[0], value),
-        print("here")
         value_out = getter(character[0])
         return f"{character[1]} now has {value_out} {stat}."
     else: return no_active_campaign_text
 
-def addRPGStat(guild, user, name: str, value: int, stat: str, setter: Callable, getter: Callable) -> str:
+def addRPGStat(guild, user, value: int, name: str, stat: str, setter: Callable, getter: Callable) -> str:
     tryRegisterServer(guild)
     campaign = m.getCampaign(guild)
     if campaign is not None:
@@ -174,6 +183,23 @@ def addRPGStat(guild, user, name: str, value: int, stat: str, setter: Callable, 
         return f"{character[1]} now has {value_out} {stat}."
     else: return no_active_campaign_text
 
+
+def campaignOverview(guild):
+    tryRegisterServer(guild)
+    campaign = m.getCampaign(guild)
+    if campaign is not None:
+        ret = f"{campaign[1]}\n"
+        ret+= "- - - - - - - - - - - - - - - - - - - -\n"
+        ret+="           NAME     KILLS     DOWNS    DEATHS   DAMAGE DEALT     DAMAGE RECEIVED   HEALING PERFORMED    HEALING RECEIVED\n"
+        values = m.getCampaignOverview(campaign[0])
+        for e1,e2,e3,e4,e5,e6,e7,e8 in values:
+             ret+= f"{str(e1).rjust(15, ' ')}{str(e2).rjust(10, ' ')}{str(e3).rjust(10, ' ')}{str(e4).rjust(10, ' ')}{str(e5).rjust(15, ' ')}{str(e6).rjust(20, ' ')}{str(e7).rjust(20, ' ')}{str(e8).rjust(20, ' ')}\n"
+        return ret
+    else: return no_active_campaign_text
+
+def campaignKills(guild):
+    return getCampaignRPGStat(guild, "Kills", m.getCampaignKills)
+
 def getKills(guild, user, name):
     return getRPGStat(guild, user, name, "kills", m.getKills)
 
@@ -182,6 +208,9 @@ def addKills(guild, user, name, kills):
 
 def setKills(guild, user, kills, name):
     return setRPGStat(guild, user, kills, name, "kills", m.setKills, m.getKills)
+
+def campaignDowns(guild):
+    return getCampaignRPGStat(guild, "downs", m.getCampaignDowns)
 
 def getDowns(guild, user, name):
     return getRPGStat(guild, user, name, "downs", m.getDowns)
@@ -192,6 +221,9 @@ def addDowns(guild, user, downs, name):
 def setDowns(guild, user, downs, name):
     return setRPGStat(guild, user, downs, name, "downs", m.setDowns, m.getDowns)
 
+def campaignDeaths(guild):
+    return getCampaignRPGStat(guild, "Deaths", m.getCampaignDeaths)
+
 def getDeaths(guild, user, name):
     return getRPGStat(guild, user, name, "deaths", m.getDeaths)
 
@@ -200,6 +232,9 @@ def addDeaths(guild, user, deaths, name):
 
 def setDeaths(guild, user, deaths, name):
     return setRPGStat(guild, user, deaths, name, "deaths", m.setDeaths, m.getDeaths)
+
+def campaignDamageDealt(guild):
+    return getCampaignRPGStat(guild, "Damage Dealt", m.getCampaignDamageDealt)
 
 def getDamageDealt(guild, user, name):
     return getRPGStat(guild, user, name, "damage dealt", m.getDamageDealt)
@@ -210,6 +245,9 @@ def addDamageDealt(guild, user, dmg, name):
 def setDamageDealt(guild, user, dmg, name):
     return setRPGStat(guild, user, dmg, name, "damage dealt", m.setDamageDealt, m.getDamageDealt)
 
+def campaignDamageReceived(guild):
+    return getCampaignRPGStat(guild, "Damage Received", m.getCampaignDamageReceived)
+
 def getDamageReceived(guild, user, name):
     return getRPGStat(guild, user, name, "damage received", m.getDamageReceived)
 
@@ -219,6 +257,9 @@ def addDamageReceived(guild, user, dmg, name):
 def setDamageReceived(guild, user, dmg, name):
     return setRPGStat(guild, user, dmg, name, "damage received", m.setDamageReceived, m.getDamageReceived)
 
+def campaignHealingPerformed(guild):
+    return getCampaignRPGStat(guild, "Healing Performed", m.getCampaignHealingPerformed)
+
 def getHealingPerformed(guild, user, name):
     return getRPGStat(guild, user, name, "healing performed", m.getHealingPerformed)
 
@@ -227,6 +268,9 @@ def addHealingPerformed(guild, user, hp, name):
 
 def setHealingPerformed(guild, user, hp, name):
     return setRPGStat(guild, user, hp, name, "healing performed", m.setHealingPerformed, m.getHealingPerformed)
+
+def campaignHealingReceived(guild):
+    return getCampaignRPGStat(guild, "Healing Received", m.getCampaignHealingReceived)
 
 def getHealingReceived(guild, user, name):
     return getRPGStat(guild, user, name, "healing received", m.getHealingReceived)
